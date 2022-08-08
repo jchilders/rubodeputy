@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/rubo_deputy/version"
+require_relative "lib/rubodeputy/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "rubo_deputy"
-  spec.version       = RuboDeputy::VERSION
+  spec.name          = "rubodeputy"
+  spec.version       = Rubodeputy::VERSION
   spec.authors       = ["James Childers"]
   spec.email         = ["james.childers@gmail.com"]
 
@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.metadata["allowed_push_host"] = "http://mygemserver.com"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/jchilders/rubo_deputy"
+  spec.metadata["source_code_uri"] = "https://github.com/jchilders/rubodeputy"
   # spec.metadata["changelog_uri"] = "Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "dry-system"
   spec.add_dependency "dry-transaction"
   spec.add_dependency "thor"
 

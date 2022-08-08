@@ -2,7 +2,7 @@
 
 require "thor"
 
-module RuboDeputy
+module Rubodeputy
   class Command < Thor
     desc "hello NAME", "say hello to NAME"
     def hello(name)

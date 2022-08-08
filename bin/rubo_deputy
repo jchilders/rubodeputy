@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
-
-rubo_deputy_path = File.expand_path("../lib", __dir__)
-$LOAD_PATH.unshift(rubo_deputy_path)
-
-require "rubo_deputy/cli"
-
-RuboDeputy::CLI.start(ARGV)

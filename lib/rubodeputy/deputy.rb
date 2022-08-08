@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require "English"
 require "set"
 require "forwardable"
-require "rubo_deputy/dir_walker"
+require "rubodeputy/dir_walker"
 
-module RuboDeputy
+module Rubodeputy
   class Deputy
     extend Forwardable
-    include RuboDeputy::DirWalker
+    include Rubodeputy::DirWalker
 
-    PROGRESS_FILE = "rubo_deputy_progress".freeze
+    PROGRESS_FILE = "rubodeputy_progress"
     attr_accessor :dir_to_clean, :progress
 
     class << self
@@ -41,10 +43,9 @@ module RuboDeputy
     end
 
     def clean_root!
-      root_files = Dir["#{dir_to_clean}/*"].filter { |f| File.file?(f) }
-      return unless root_files.size.positive?
+      return unless root_dir_files.size.positive?
 
-      file_list = root_files.join(" ")
+      file_list = root_dir_files.join(" ")
       run_rubocop(file_list)
 
       unless $CHILD_STATUS.success?
@@ -57,7 +58,7 @@ module RuboDeputy
     end
 
     def reset!
-      File.delete(PROGRESS_FILE) if File.exist?(PROGRESS_FILE)
+      FileUtils.rm_f(PROGRESS_FILE)
       @progress = empty_progress
     end
 

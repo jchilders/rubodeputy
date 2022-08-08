@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in rubo_deputy.gemspec
+# Specify your gem's dependencies in rubodeputy.gemspec
 gemspec
 
 gem "rake", "~> 13.0"

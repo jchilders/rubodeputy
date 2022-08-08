@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboDeputy do
+RSpec.describe Rubodeputy do
   it "has a version number" do
-    expect(RuboDeputy::VERSION).not_to be nil
+    expect(Rubodeputy::VERSION).not_to be nil
   end
 
   it "does something useful" do

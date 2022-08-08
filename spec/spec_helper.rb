@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rubo_deputy"
+require "rubodeputy"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
