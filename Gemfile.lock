@@ -98,11 +98,11 @@ DEPENDENCIES
   pry
   rake (~> 13.0)
   rspec (~> 3.0)
-  rubodeputy!
   rubocop (~> 1.33)
   rubocop-performance
   rubocop-rake
   rubocop-rspec
+  rubodeputy!
 
 BUNDLED WITH
    2.2.3

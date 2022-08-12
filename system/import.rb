@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-require 'container'
+require "container"
 Import = RubodeputyContainer.injector
