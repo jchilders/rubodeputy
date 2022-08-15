@@ -1,4 +1,4 @@
-require 'rubodeputy'
+require "rubodeputy"
 
 module Rubodeputy
   module Commands
@@ -8,7 +8,7 @@ module Rubodeputy
         puts ""
 
         Rubodeputy::Commands::Registry.resolved_commands.each do |name, klass|
-          next if name == 'help'
+          next if name == "help"
 
           puts CLI::UI.fmt("{{command:#{Rubodeputy::TOOL_NAME} #{name}}}")
           if help = klass.help

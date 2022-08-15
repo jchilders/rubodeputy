@@ -1,5 +1,5 @@
-require 'rubodeputy'
-require 'rubodeputy/marshaler'
+require "rubodeputy"
+require "rubodeputy/marshaler"
 
 module Rubodeputy
   module Commands
@@ -7,7 +7,8 @@ module Rubodeputy
       def call(args, _name)
         dir = args[0]
         dep = Rubodeputy::Deputy.new(dir)
-        dep.clean!
+        dep.correct
+        Rubodeputy::Commands::Stats.call([], nil)
       end
 
       class << self

@@ -1,11 +1,11 @@
-require 'rubodeputy'
-require 'rubodeputy/deputy'
-require 'pry'
+require "rubodeputy"
+require "rubodeputy/deputy"
+require "pry"
 
 module Rubodeputy
   module Commands
     Registry = CLI::Kit::CommandRegistry.new(
-      default: 'help',
+      default: "help",
       contextual_resolver: nil
     )
 
@@ -14,8 +14,8 @@ module Rubodeputy
       Registry.add(->() { const_get(const) }, cmd)
     end
 
-    register :Correct, 'correct', 'rubodeputy/commands/correct'
-    register :Stats, 'stats', 'rubodeputy/commands/stats'
-    register :Help,    'help',    'rubodeputy/commands/help'
+    register :Correct, "correct", "rubodeputy/commands/correct"
+    register :Stats, "stats", "rubodeputy/commands/stats"
+    register :Help, "help", "rubodeputy/commands/help"
   end
 end

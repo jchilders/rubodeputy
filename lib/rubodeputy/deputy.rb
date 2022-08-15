@@ -17,21 +17,20 @@ module Rubodeputy
       @progress = progress_file? ? unmarshal_progress : empty_progress
     end
 
-    def clean!
-      correct_subdirs!
-      correct_root!
-      print_stats
+    def correct
+      correct_subdirs
+      correct_root
       marshal_progress
       git_add
     end
 
-    def correct_subdirs!
+    def correct_subdirs
       subdirs.each do |dir|
-        lint_and_test!(dir)
+        lint_and_test(dir)
       end
     end
 
-    def correct_root!
+    def correct_root
       return unless root_dir_files.size.positive?
 
       file_list = root_dir_files.join(" ")
@@ -46,12 +45,12 @@ module Rubodeputy
       add_done(dir_to_clean)
     end
 
-    def reset!
+    def reset
       rm_progress_file
       @progress = empty_progress
     end
 
-    def lint_and_test!(dir)
+    def lint_and_test(dir)
       print "#{dir}: "
       if already_progressed_dirs.member?(dir)
         puts "skipping"

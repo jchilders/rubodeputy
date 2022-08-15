@@ -1,10 +1,10 @@
-require 'rubodeputy'
+require "rubodeputy"
 
 module Rubodeputy
   module Commands
     class Example < Rubodeputy::Command
       def call(_args, _name)
-        puts 'neato'
+        puts "neato"
 
         if rand < 0.05
           raise(CLI::Kit::Abort, "you got unlucky!")

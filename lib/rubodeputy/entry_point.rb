@@ -1,4 +1,4 @@
-require 'rubodeputy'
+require "rubodeputy"
 
 module Rubodeputy
   module EntryPoint

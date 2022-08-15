@@ -1,6 +1,6 @@
-require 'json'
-require 'rubodeputy'
-require 'rubodeputy/marshaler'
+require "json"
+require "rubodeputy"
+require "rubodeputy/marshaler"
 
 module Rubodeputy
   module Commands
@@ -26,21 +26,21 @@ module Rubodeputy
 
       private
 
-      def print_json
-        require 'json'
-        progress_json = {}.tap do |hash|
-          progress.each do |k, v|
-            hash[k] = v.to_a
+        def print_json
+          require "json"
+          progress_json = {}.tap do |hash|
+            progress.each do |k, v|
+              hash[k] = v.to_a
+            end
           end
+          puts progress_json
         end
-        puts progress_json
-      end
 
-      def print_stats(options = {})
-        puts "Num dirs with Rubocop errors: #{progress[:err_dirs].size}"
-        puts "Num dirs with test failures: #{progress[:failed_dirs].size}"
-        puts "Num completed dirs: #{progress[:done_dirs].size}"
-      end
+        def print_stats(options = {})
+          puts "Num dirs with Rubocop errors: #{progress[:err_dirs].size}"
+          puts "Num dirs with test failures: #{progress[:failed_dirs].size}"
+          puts "Num completed dirs: #{progress[:done_dirs].size}"
+        end
     end
   end
 end
