@@ -1,9 +1,8 @@
 require "fileutils"
-require "forwardable"
 
 module Rubodeputy
   module Marshaler
-    extend Forwardable
+    extend self
 
     PROGRESS_FILE = "rubodeputy_progress"
 
@@ -20,15 +19,6 @@ module Rubodeputy
       else
         PROGRESS_FILE
       end
-    end
-
-    def print_stats(options = {})
-      puts "Num dirs with Rubocop errors: #{progress[:err_dirs].size}"
-      puts progress[:err_dirs].join(", ") if options["verbose"]
-      puts "Num dirs with test failures: #{progress[:failed_dirs].size}"
-      puts progress[:failed_dirs].join(", ") if options["verbose"]
-      puts "Num completed dirs: #{progress[:done_dirs].size}"
-      puts progress[:done_dirs].join(", ") if options["verbose"]
     end
 
     def progress_file?

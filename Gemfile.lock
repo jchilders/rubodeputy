@@ -2,14 +2,20 @@ PATH
   remote: .
   specs:
     rubodeputy (0.1.0)
+      cli-kit
+      cli-ui
       dry-system
       dry-transaction
-      thor
 
 GEM
   remote: https://rubygems.org/
   specs:
+    ansi (1.5.0)
     ast (2.4.2)
+    builder (3.2.4)
+    cli-kit (4.0.0)
+      cli-ui (>= 1.1.4)
+    cli-ui (1.5.1)
     coderay (1.1.3)
     concurrent-ruby (1.1.10)
     diff-lcs (1.5.0)
@@ -44,7 +50,16 @@ GEM
       dry-matcher (>= 0.7.0)
       dry-monads (>= 0.4.0)
     json (2.6.2)
+    metaclass (0.0.4)
     method_source (1.0.0)
+    minitest (5.16.2)
+    minitest-reporters (1.5.0)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+    mocha (1.5.0)
+      metaclass (~> 0.0.1)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -88,13 +103,17 @@ GEM
     rubocop-rspec (2.12.1)
       rubocop (~> 1.31)
     ruby-progressbar (1.11.0)
-    thor (1.2.1)
     unicode-display_width (2.2.0)
 
 PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  cli-kit (~> 4.0.0)
+  cli-ui (~> 1.5.1)
+  minitest (>= 5.0.0)
+  minitest-reporters
+  mocha (~> 1.5.0)
   pry
   rake (~> 13.0)
   rspec (~> 3.0)

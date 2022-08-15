@@ -27,11 +27,11 @@ Gem::Specification.new do |spec|
   spec.executables << "rubodeputy"
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "cli-kit"
+  spec.add_dependency "cli-ui"
   spec.add_dependency "dry-system"
   spec.add_dependency "dry-transaction"
-  spec.add_dependency "thor"
 
-  spec.add_development_dependency "pry"
   spec.add_development_dependency "rubocop", "~> 1.33"
   spec.add_development_dependency "rubocop-performance"
   spec.add_development_dependency "rubocop-rake"

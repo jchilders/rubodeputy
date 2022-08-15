@@ -2,9 +2,20 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in rubodeputy.gemspec
 gemspec
+
+gem 'cli-kit', '~> 4.0.0'
+gem 'cli-ui', '~> 1.5.1'
 
 gem "rake", "~> 13.0"
 
-gem "rspec", "~> 3.0"
+group :development do
+  gem "pry"
+end
+
+group :test do
+  gem "rspec", "~> 3.0"
+  gem 'mocha', '~> 1.5.0', require: false
+  gem 'minitest', '>= 5.0.0', require: false
+  gem 'minitest-reporters', require: false
+end
