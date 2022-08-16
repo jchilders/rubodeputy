@@ -517,6 +517,9 @@ Style/KeywordParametersOrder:
 Style/Lambda:
   Enabled: false
 
+Style/LambdaCall:
+  Enabled: false
+
 Style/MapToHash:
   Enabled: false
 

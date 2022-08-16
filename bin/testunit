@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'bundler/setup'
+require "rubygems"
+require "bundler/setup"
 
-root = File.expand_path('../..', __FILE__)
-TEST_ROOT = root + '/test'
+root = File.expand_path("../..", __FILE__)
+TEST_ROOT = root + "/test"
 
 $LOAD_PATH.unshift(TEST_ROOT)
 
@@ -19,5 +19,5 @@ end
 
 # A list of files is presumed to be specified
 ARGV.each do |a|
-  require a.sub(%r{^test/}, '')
+  require a.sub(%r{^test/}, "")
 end

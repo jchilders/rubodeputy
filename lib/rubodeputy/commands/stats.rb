@@ -5,11 +5,9 @@ require "rubodeputy/marshaler"
 module Rubodeputy
   module Commands
     class Stats < Rubodeputy::Command
-      attr_accessor :progress
+      include Rubodeputy::Marshaler
 
       def call(args, _name)
-        @progress = Rubodeputy::Marshaler.unmarshal_progress
-
         if args.include?("--json")
           print_json
           return
@@ -28,12 +26,12 @@ module Rubodeputy
 
         def print_json
           require "json"
-          progress_json = {}.tap do |hash|
+          result = {}.tap do |hash|
             progress.each do |k, v|
               hash[k] = v.to_a
             end
           end
-          puts progress_json
+          puts result.to_json
         end
 
         def print_stats(options = {})

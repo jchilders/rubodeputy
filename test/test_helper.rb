@@ -6,17 +6,17 @@ begin
   addpath.call("lib")
 end
 
-require 'cli/kit'
+require "cli/kit"
 
-require 'fileutils'
-require 'tmpdir'
-require 'tempfile'
+require "fileutils"
+require "tmpdir"
+require "tempfile"
 
-require 'rubygems'
-require 'bundler/setup'
+require "rubygems"
+require "bundler/setup"
 
 CLI::UI::StdoutRouter.enable
 
-require 'minitest/autorun'
+require "minitest/autorun"
 require "minitest/unit"
-require 'mocha/minitest'
+require "mocha/minitest"

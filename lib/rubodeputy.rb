@@ -2,6 +2,9 @@ require "cli/ui"
 require "cli/kit"
 require "rubodeputy/deputy"
 require "rubodeputy/marshaler"
+require "rubodeputy/correct_transaction"
+require "rubodeputy/progress_listener"
+require "rubodeputy/run_tests_transaction"
 
 CLI::UI::StdoutRouter.enable
 

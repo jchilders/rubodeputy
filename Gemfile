@@ -6,7 +6,7 @@ gemspec
 
 gem 'cli-kit', '~> 4.0.0'
 gem 'cli-ui', '~> 1.5.1'
-
+gem "json"
 gem "rake", "~> 13.0"
 
 group :development do

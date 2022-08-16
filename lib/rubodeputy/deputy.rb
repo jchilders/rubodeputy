@@ -1,20 +1,23 @@
 # frozen_string_literal: true
 
 require "English"
+require "dry/monads"
+require "dry/monads/do"
+require "dry/transaction"
 require "set"
 require "rubodeputy/dir_walker"
 require "rubodeputy/marshaler"
 
 module Rubodeputy
   class Deputy
+    include Dry::Monads[:result]
     include Rubodeputy::DirWalker
     include Rubodeputy::Marshaler
 
-    attr_accessor :dir_to_clean, :progress
+    attr_accessor :dir_to_clean
 
     def initialize(dir_to_clean = ".")
-      @dir_to_clean = dir_to_clean
-      @progress = progress_file? ? unmarshal_progress : empty_progress
+      @dir_to_clean = dir_to_clean.gsub(%r{/$}, "") # rm trailing slash
     end
 
     def correct
@@ -26,9 +29,15 @@ module Rubodeputy
 
     def correct_subdirs
       subdirs.each do |dir|
-        lint_and_test(dir)
+        result = Rubodeputy::CorrectTransaction.(dir)
       end
     end
+
+    # include Dry::Transaction
+    # include Dry::Monads::Do.for(:call)
+    # def call(params)
+    #   binding.pry
+    # end
 
     def correct_root
       return unless root_dir_files.size.positive?
@@ -37,7 +46,6 @@ module Rubodeputy
       autocorrect(file_list)
 
       unless $CHILD_STATUS.success?
-        puts "error running rubocop"
         add_error(dir_to_clean)
         `git checkout #{file_list}`
         return
@@ -45,54 +53,45 @@ module Rubodeputy
       add_done(dir_to_clean)
     end
 
-    def reset
-      rm_progress_file
-      @progress = empty_progress
-    end
-
+    # @return [Maybe]
     def lint_and_test(dir)
-      print "#{dir}: "
-      if already_progressed_dirs.member?(dir)
-        puts "skipping"
-        return
+      if already_processed_dirs.member?(dir)
+        Success(dir)
+      else
+        Failure(dir)
       end
+
+      return if already_processed_dirs.member?(dir)
 
       autocorrect(dir)
       unless $CHILD_STATUS.success?
-        puts "error running rubocop"
         add_error(dir)
         `git checkout #{dir}`
 
-        return
+        nil
       end
 
-      # If nothing changed go to next dir
-      `git diff --quiet -- #{dir}`
-      if $CHILD_STATUS.success?
-        puts "nothing to clean"
-        add_done(dir)
-        return
-      end
+      # # If nothing changed go to next dir
+      # `git diff --quiet -- #{dir}`
+      # if $CHILD_STATUS.success?
+      #   add_done(dir)
+      #   return
+      # end
 
-      test_dir = dir.gsub(/^app/, "test")
-      print "testing "
-      if Dir.exist?(test_dir)
-        print "#{test_dir}..."
-        `rails test #{test_dir}`
-      else
-        print "all..."
-        `rails test`
-      end
+      # test_dir = dir.gsub(/^app/, "test")
+      # if Dir.exist?(test_dir)
+      #   `rake test #{test_dir}`
+      # else
+      #   `rake test`
+      # end
 
-      unless $CHILD_STATUS.success?
-        puts "test(s) failed"
-        add_failure(dir)
+      # unless $CHILD_STATUS.success?
+      #   add_failure(dir)
 
-        return
-      end
+      #   return
+      # end
 
-      add_done(dir)
-      puts " done!"
+      # add_done(dir)
     end
 
     private
@@ -115,20 +114,17 @@ module Rubodeputy
         progress[key] << dir
       end
 
-      def empty_progress
-        {
-          err_dirs: Set.new,
-          failed_dirs: Set.new,
-          done_dirs: Set.new,
-        }
-      end
-
-      def already_progressed_dirs
+      def already_processed_dirs
         progress[:err_dirs] + progress[:failed_dirs] + progress[:done_dirs]
       end
 
       def autocorrect(dir_or_files)
         `rubocop --autocorrect --fail-level E #{dir_or_files}`
+        if $CHILD_STATUS.success?
+          Success(dir_or_files)
+        else
+          Failure(dir_or_files)
+        end
       end
 
       def git_add

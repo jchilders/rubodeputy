@@ -34,7 +34,26 @@ module Rubodeputy
     end
 
     def unmarshal_progress
-      progress_file? ? Marshal.load(File.read(progress_file)) : {}
+      progress_file? ? Marshal.load(File.read(progress_file)) : empty_progress
     end
+
+    def progress
+      @progress ||= unmarshal_progress
+    end
+
+    private
+
+      def empty_progress
+        {
+          err_dirs: Set.new,
+          failed_dirs: Set.new,
+          done_dirs: Set.new,
+        }
+      end
+
+      trap "SIGINT" do
+        marshal_progress
+        exit(0)
+      end
   end
 end
