@@ -4,16 +4,12 @@ module Rubodeputy
   module ProgressListener
     extend self
 
-    NOTIFICATIONS = []
-
     def on_step_succeeded(event)
-      dir = event.payload[:value]
-      done_dirs << dir
+      done_dirs << event.payload[:value]
     end
 
     def on_step_failed(event)
-      dir = event.payload[:value]
-      failed_dirs << dir
+      failed_dirs << event.payload[:value]
     end
 
     def err_dirs

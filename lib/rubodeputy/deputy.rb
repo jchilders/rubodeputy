@@ -23,6 +23,7 @@ module Rubodeputy
 
     def correct
       correct_subdirs
+      run_tests
       # git_add
     end
 
@@ -35,14 +36,34 @@ module Rubodeputy
       end
     end
 
+    def run_tests
+      corrected_dirs.each do |dir|
+        Rubodeputy::RunTestsTransaction.new.call(dir) do |on|
+          on.success { |dir| tested_dirs << dir }
+          on.failure { |dir| tests_failed_dirs << dir }
+        end
+      end
+    end
+
+    def progress
+      Application[:progress].progress
+    end
+
     def corrected_dirs
-      Application[:progress].progress[:corrected_dirs]
+      progress[:corrected_dirs]
     end
 
     def err_dirs
-      Application[:progress].progress[:err_dirs]
+      progress[:err_dirs]
     end
 
+    def tested_dirs
+      progress[:tested_dirs]
+    end
+
+    def tests_failed_dirs
+      progress[:tests_failed_dirs]
+    end
 
     # @return [Maybe]
     def lint_and_test(dir)

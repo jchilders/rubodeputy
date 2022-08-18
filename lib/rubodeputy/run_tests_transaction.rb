@@ -14,15 +14,30 @@ module Rubodeputy
 
     private
 
-    def valid?(dir)
-      puts "-=> #{self.class.name}##{__method__} -> dir: #{dir}"
-      Dir.exist?(dir)
-    end
+      def valid?(dir)
+        Dir.exist?(dir)
+      end
 
-    def run_tests(dir)
-      puts "-=> #{self.class.name}##{__method__} -> running tests"
-      files = files_for_dir(dir).join(" ")
-      Success(dir)
-    end
+      def run_tests(dir)
+        tests = test_files(dir)
+        return Failure(dir) unless tests.any?
+
+        puts "-=> #{self.class.name}##{__method__} -> tests: #{tests}"
+        `rake test #{tests.join(" ")}`
+        if $CHILD_STATUS.success?
+          Success(dir)
+        else
+          Failure(dir)
+        end
+      end
+
+      def test_files(dir)
+        files = files_for_dir(dir)
+        [].tap do |ary|
+          files.each do |file|
+            ary << `alt #{file}`
+          end
+        end
+      end
   end
 end

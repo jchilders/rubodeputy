@@ -13,7 +13,7 @@ module Rubodeputy
             spinner.update_title(dir)
             dep.correct
           end
-          spinner.update_title(dir_to_clean)
+          spinner.update_title("Done!")
         end
 
         Rubodeputy::Commands::Stats.call([], nil)
@@ -21,7 +21,7 @@ module Rubodeputy
 
       class << self
         def help
-          "Clean directory.\nUsage: {{command:#{Rubodeputy::TOOL_NAME} clean}} <directory>"
+          "Autocorrect directory.\nUsage: {{command:#{Rubodeputy::TOOL_NAME} correct}} <directory>"
         end
       end
     end

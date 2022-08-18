@@ -1,6 +1,5 @@
 require "rubodeputy"
 require "rubodeputy/deputy"
-require "pry"
 
 module Rubodeputy
   module Commands
@@ -15,6 +14,7 @@ module Rubodeputy
     end
 
     register :Correct, "correct", "rubodeputy/commands/correct"
+    register :Reset, "reset", "rubodeputy/commands/reset"
     register :Stats, "stats", "rubodeputy/commands/stats"
     register :Help, "help", "rubodeputy/commands/help"
   end

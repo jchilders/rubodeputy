@@ -1,6 +1,6 @@
 Application.register_provider(:progress) do
   prepare do
-    require 'progress'
+    require "progress"
   end
 
   start do

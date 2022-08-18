@@ -13,5 +13,5 @@ end
 Application.finalize!
 
 at_exit do
-  Application.stop(:progress)
+  Application.stop(:progress) if Application.registered?(:progress)
 end
