@@ -21,7 +21,8 @@ module Rubodeputy
       end
 
       def autocorrect(dir)
-        `rubocop --autocorrect --fail-level E #{dir}`
+        files = DirWalker.files_for_dir(dir).join(" ")
+        `rubocop --autocorrect --fail-level E #{files}`
         if $CHILD_STATUS.success?
           Success(dir)
         else

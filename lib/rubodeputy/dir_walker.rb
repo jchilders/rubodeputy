@@ -1,5 +1,7 @@
 module Rubodeputy
   module DirWalker
+    extend self
+
     def subdirs
       @subdirs ||= Dir["#{dir_to_clean}/**/*"]
         .filter { |dir| File.directory?(dir) }

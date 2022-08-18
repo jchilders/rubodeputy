@@ -5,8 +5,6 @@ require "rubodeputy/marshaler"
 module Rubodeputy
   module Commands
     class Stats < Rubodeputy::Command
-      include Rubodeputy::Marshaler
-
       def call(args, _name)
         if args.include?("--json")
           print_json
@@ -24,6 +22,10 @@ module Rubodeputy
 
       private
 
+        def progress
+          Application[:progress].progress
+        end
+
         def print_json
           require "json"
           result = {}.tap do |hash|
@@ -35,9 +37,9 @@ module Rubodeputy
         end
 
         def print_stats(options = {})
-          puts "Num dirs with Rubocop errors: #{progress[:err_dirs].size}"
-          puts "Num dirs with test failures: #{progress[:failed_dirs].size}"
-          puts "Num completed dirs: #{progress[:done_dirs].size}"
+          progress.each do |k, v|
+            puts "#{k}: #{v.size}"
+          end
         end
     end
   end

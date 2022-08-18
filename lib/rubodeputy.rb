@@ -1,5 +1,7 @@
 require "cli/ui"
 require "cli/kit"
+
+require "application"
 require "rubodeputy/deputy"
 require "rubodeputy/marshaler"
 require "rubodeputy/correct_transaction"

@@ -6,12 +6,6 @@ module Rubodeputy
 
     PROGRESS_FILE = "rubodeputy_progress"
 
-    class << self
-      def included(mod)
-        mod.extend self
-      end
-    end
-
     def progress_file
       if File.directory?("tmp")
         FileUtils.mkdir_p "./tmp/rubodeputy"
@@ -41,12 +35,19 @@ module Rubodeputy
       @progress ||= unmarshal_progress
     end
 
+    def reset
+      rm_progress_file
+      @progress = empty_progress
+    end
+
     private
 
       def empty_progress
         {
+          corrected_dirs: Set.new,
+          tested_dirs: Set.new,
           err_dirs: Set.new,
-          failed_dirs: Set.new,
+          tests_failed_dirs: Set.new,
           done_dirs: Set.new,
         }
       end

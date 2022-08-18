@@ -10,48 +10,39 @@ require "rubodeputy/marshaler"
 
 module Rubodeputy
   class Deputy
-    include Dry::Monads[:result]
     include Rubodeputy::DirWalker
     include Rubodeputy::Marshaler
 
     attr_accessor :dir_to_clean
 
     def initialize(dir_to_clean = ".")
+      raise ArgumentError, "#{dir_to_clean} is not a directory" unless File.directory?(dir_to_clean)
+
       @dir_to_clean = dir_to_clean.gsub(%r{/$}, "") # rm trailing slash
     end
 
     def correct
       correct_subdirs
-      correct_root
-      marshal_progress
-      git_add
+      # git_add
     end
 
     def correct_subdirs
       subdirs.each do |dir|
-        result = Rubodeputy::CorrectTransaction.(dir)
+        Rubodeputy::CorrectTransaction.new.call(dir) do |on|
+          on.success { |dir| corrected_dirs << dir }
+          on.failure { |dir| err_dirs << dir }
+        end
       end
     end
 
-    # include Dry::Transaction
-    # include Dry::Monads::Do.for(:call)
-    # def call(params)
-    #   binding.pry
-    # end
-
-    def correct_root
-      return unless root_dir_files.size.positive?
-
-      file_list = root_dir_files.join(" ")
-      autocorrect(file_list)
-
-      unless $CHILD_STATUS.success?
-        add_error(dir_to_clean)
-        `git checkout #{file_list}`
-        return
-      end
-      add_done(dir_to_clean)
+    def corrected_dirs
+      Application[:progress].progress[:corrected_dirs]
     end
+
+    def err_dirs
+      Application[:progress].progress[:err_dirs]
+    end
+
 
     # @return [Maybe]
     def lint_and_test(dir)
@@ -95,24 +86,6 @@ module Rubodeputy
     end
 
     private
-
-      def add_error(dir)
-        add_dir_progress(:err_dirs, dir)
-      end
-
-      def add_failure(dir)
-        add_dir_progress(:failed_dirs, dir)
-      end
-
-      def add_done(dir)
-        add_dir_progress(:done_dirs, dir)
-      end
-
-      def add_dir_progress(key, dir)
-        return unless Dir.exist?(dir)
-
-        progress[key] << dir
-      end
 
       def already_processed_dirs
         progress[:err_dirs] + progress[:failed_dirs] + progress[:done_dirs]

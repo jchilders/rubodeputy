@@ -11,10 +11,9 @@ module Rubodeputy
         CLI::UI::Spinner.spin("Correcting: ") do |spinner|
           dep.subdirs.each do |dir|
             spinner.update_title(dir)
-            dep.lint_and_test(dir)
+            dep.correct
           end
           spinner.update_title(dir_to_clean)
-          dep.correct_root
         end
 
         Rubodeputy::Commands::Stats.call([], nil)
